@@ -1,6 +1,9 @@
 #encoding:utf-8
 module UnionPay
   module Conf
+    class << self
+      attr_accessor :front_pay_url, :back_pay_url, :query_url
+    end
     VERIFY_HTTPS_CERT = false
 
     Timezone = "Asia/Shanghai" #时区
@@ -18,20 +21,6 @@ module UnionPay
       'merAbbr' => '商户名称'
     }
 
-    # 测试环境
-    Front_pay_url = "http://58.246.226.99/UpopWeb/api/Pay.action"
-    Back_pay_url = "http://58.246.226.99/UpopWeb/api/BSPay.action"
-    Query_url = "http://58.246.226.99/UpopWeb/api/Query.action"
-
-    ## 预上线环境
-    #$front_pay_url = "https://www.epay.lxdns.com/UpopWeb/api/Pay.action"
-    #$back_pay_url = "https://www.epay.lxdns.com/UpopWeb/api/BSPay.action"
-    #$query_url = "https://www.epay.lxdns.com/UpopWeb/api/Query.action"
-    #
-    ## 线上环境
-    #$front_pay_url = "https://unionpaysecure.com/api/Pay.action"
-    #$back_pay_url = "https://besvr.unionpaysecure.com/api/BSPay.action"
-    #$query_url = "https://query.unionpaysecure.com/api/Query.action"
 
     FRONT_PAY = 1
     BACK_PAY = 2

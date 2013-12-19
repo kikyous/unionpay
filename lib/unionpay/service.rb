@@ -16,7 +16,7 @@ module UnionPay
 
       trans_type = args['transType']
       if [UnionPay::Conf::CONSUME, UnionPay::Conf::PRE_AUTH].include? trans_type
-        @@api_url = UnionPay::Conf::Front_pay_url
+        @@api_url = UnionPay::Conf.front_pay_url
         args.merge!(UnionPay::Conf::Pay_params_empty).merge!(UnionPay::Conf::Pay_params)
         param_check = UnionPay::Conf::Pay_params_check
       else
