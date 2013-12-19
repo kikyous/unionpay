@@ -1,6 +1,5 @@
 #encoding:utf-8
 module UnionPay
-  module Conf
     class << self
       attr_accessor :front_pay_url, :back_pay_url, :query_url
     end
@@ -144,5 +143,4 @@ module UnionPay
     Sign_ignore_params = [
       "bank",
     ]
-  end
 end

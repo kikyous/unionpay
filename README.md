@@ -39,3 +39,21 @@ param['backEndUrl']   = "http://www.example.com/sdk/utf8/back_notify.php"     #å
 
 puts UnionPay::Service.front_pay(param).form{"<input type='submit' />"}
 ```
+
+### Verify notify
+
+```ruby
+# example in rails
+# The notify url MUST be set when generate payment url
+def unionpay_notify
+  # except :controller_name, :action_name, :host, etc.
+  notify_params = params.except(*request.path_parameters.keys)
+  args = UnionPay::Service.responce(notify_params)
+  if args['respCode'] == UnionPay::RESP_SUCCESS
+    # valid notify, code your business logic.
+    render :text => 'success'
+  else
+    render :text => 'error'
+  end
+end
+```
