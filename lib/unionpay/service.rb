@@ -24,7 +24,7 @@ module UnionPay
       self.service(args,UnionPay::FRONT_PAY)
     end
 
-    def responce(args)
+    def self.responce(args)
       cupReserved = (args['cupReserved'] ||= '')
       cupReserved = Rack::Utils.parse_nested_query cupReserved.gsub(/^{/,'').gsub(/}$/,'')
       if !args['signature'] || !args['signMethod']
