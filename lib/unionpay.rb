@@ -1,6 +1,7 @@
-require './unionpay/conf'
-require './unionpay/service'
-require './unionpay/version'
+require File.dirname(__FILE__) + '/unionpay/conf'
+require File.dirname(__FILE__) + '/unionpay/service'
+require File.dirname(__FILE__) + '/unionpay/version'
+
 module UnionPay
   class << self
     attr_accessor :mer_id, :security_key, :mer_abbr

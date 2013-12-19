@@ -17,7 +17,7 @@ param['backEndUrl']            = "http://www.example.com/sdk/utf8/back_notify.ph
 #
 
 # 其余可填空的参数可以不填写
-t s
+
 UnionPay.mer_id = '105550149170027'
 UnionPay.mer_abbr = '商户名称'         # '104110548991233'
 UnionPay.security_key = '88888888'    #'W38UCQOW83URMOQWI3URXMOQIUEXRIQJQXR'
