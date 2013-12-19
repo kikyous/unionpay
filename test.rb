@@ -1,5 +1,5 @@
 #encoding:utf-8
-require './unionpay'
+require './lib/unionpay'
 
 param = {}
 param['transType']             = UnionPay::Conf::CONSUME;                         #交易类型，CONSUME or PRE_AUTH
