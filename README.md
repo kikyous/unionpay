@@ -21,7 +21,7 @@ UnionPay.security_key = '88888888'
 ### Generate payment form
 ```ruby
 param = {}
-param['transType']    = UnionPay::Conf::CONSUME                         #交易类型，CONSUME or PRE_AUTH
+param['transType']    = UnionPay::CONSUME                         #交易类型，CONSUME or PRE_AUTH
 param['orderAmount']  = 11000                                           #交易金额
 param['orderNumber']  = Time.now.strftime('%Y%m%d%H%M%S')               #订单号，必须唯一
 param['customerIp']   = '127.0.0.1'
