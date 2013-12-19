@@ -78,9 +78,10 @@ module UnionPay
       Digest::MD5.hexdigest(sign_str + Digest::MD5.hexdigest(UnionPay.security_key))
     end
 
-    def self.form
+    def self.form options={}
+      attrs = options.map{|k,v| "#{k}='#{v}'"}.join(' ')
       html = [
-        "<form id='pay_form' name='pay_form' action='#{@@api_url}' method='post'>"
+        "<form #{attrs} action='#{@@api_url}' method='post'>"
       ]
       @@args.each do |k,v|
         html << "<input type='hidden' name='#{k}' value='#{v}' />"

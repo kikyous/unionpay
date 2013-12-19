@@ -25,4 +25,4 @@ param['backEndUrl']            = "http://www.example.com/sdk/utf8/back_notify.ph
 
 
 
-puts UnionPay::Service.front_pay(param).form{"<input type='submit' />"}
+puts UnionPay::Service.front_pay(param).form(target: '_blank', id: 'form'){"<input type='submit' />"}
