@@ -5,6 +5,10 @@ unionpay
 
 ## Usage
 
+### Install
+
+```gem install unionpay```
+
 ### Config
 
 ```ruby
