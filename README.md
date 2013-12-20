@@ -38,7 +38,7 @@ param['backEndUrl']   = "http://www.example.com/sdk/utf8/back_notify.php"     #�
 # 其余可填空的参数可以不填写
 
 service = UnionPay::Service.front_pay(param)
-servide.args   ## get args
+service.args   ## get args
 service.form(target: '_blank', id: 'form'){"<input type='submit' />"}  ## get form
 ```
 
