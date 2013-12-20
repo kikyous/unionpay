@@ -24,7 +24,6 @@ module UnionPay
       ## 预上线环境
       when :pre_production
         self.front_pay_url = "https://www.epay.lxdns.com/UpopWeb/api/Pay.action"
-        self.front_pay_url = "http://58.246.226.99/UpopWeb/api/Pay.action"
         self.back_pay_url = "https://www.epay.lxdns.com/UpopWeb/api/BSPay.action"
         self.query_url = "https://www.epay.lxdns.com/UpopWeb/api/Query.action"
       ## 线上环境
