@@ -69,6 +69,10 @@ module UnionPay
       html.join
     end
 
+    def [] key
+      self.args[key]
+    end
+
     private
     def service(param, service_type)
       if param['commodityUrl']
