@@ -37,7 +37,9 @@ param['backEndUrl']   = "http://www.example.com/sdk/utf8/back_notify.php"     #�
 
 # 其余可填空的参数可以不填写
 
-UnionPay::Service.front_pay(param).form(target: '_blank', id: 'form'){"<input type='submit' />"}
+service = UnionPay::Service.front_pay(param)
+servide.args   ## get args
+service.form(target: '_blank', id: 'form'){"<input type='submit' />"}  ## get form
 ```
 
 ### Verify notify
@@ -48,7 +50,7 @@ UnionPay::Service.front_pay(param).form(target: '_blank', id: 'form'){"<input ty
 def unionpay_notify
   # except :controller_name, :action_name, :host, etc.
   notify_params = params.except(*request.path_parameters.keys)
-  args = UnionPay::Service.responce(notify_params)
+  args = UnionPay::Service.responce(notify_params).args
   if args['respCode'] == UnionPay::RESP_SUCCESS
     # valid notify, code your business logic.
     render :text => 'success'
