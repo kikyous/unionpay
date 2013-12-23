@@ -13,8 +13,9 @@ module UnionPay
 
     def self.front_pay(param)
       new.instance_eval do
-        param['orderTime']              ||= Time.now.strftime('%Y%m%d%H%M%S')         #交易时间, YYYYmmhhddHHMMSS
-        param['orderCurrency']          ||= UnionPay::CURRENCY_CNY                    #交易币种，CURRENCY_CNY=>人民币
+        param['orderTime']         ||= Time.now.strftime('%Y%m%d%H%M%S')         #交易时间, YYYYmmhhddHHMMSS
+        param['orderCurrency']     ||= UnionPay::CURRENCY_CNY                    #交易币种，CURRENCY_CNY=>人民币
+        param['transType']         ||= UnionPay::CONSUME
         trans_type = param['transType']
         if [UnionPay::CONSUME, UnionPay::PRE_AUTH].include? trans_type
           @api_url = UnionPay.front_pay_url
