@@ -27,7 +27,7 @@ class UnionPay::ServiceTest < Test::Unit::TestCase
   end
 
   def test_responce
-    params = {
+    test = {
       "charset" => "UTF-8", "cupReserved" => "", "exchangeDate" => "",
       "exchangeRate" => "", "merAbbr" => "银联商城（公司）", "merId" => "105550149170027",
       "orderAmount" => "9300", "orderCurrency" => "156", "orderNumber" => "D201312240006",
@@ -38,8 +38,7 @@ class UnionPay::ServiceTest < Test::Unit::TestCase
       "signature" => "5b19db55d07290c739de97cb117ce884",
     #  "controller" => "front_money_payment_records", "action" => "unionpay_notify"
     }
-    assert_not_nil UnionPay::Service.responce(params).args
-
+    assert UnionPay::Service.responce(test).args['respCode'] == UnionPay::RESP_SUCCESS
   end
 
 end
