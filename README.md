@@ -62,7 +62,7 @@ end
 
 
 
-### Generate front payment post params
+### Generate back payment post params
 
 ```ruby
 #交易类型 退货=REFUND 或 消费撤销=CONSUME_VOID, 如果原始交易是PRE_AUTH，那么后台接口也支持对应的
