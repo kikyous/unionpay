@@ -19,8 +19,8 @@ module UnionPay
         trans_type = param['transType']
         if [UnionPay::CONSUME, UnionPay::PRE_AUTH].include? trans_type
           @api_url = UnionPay.front_pay_url
-          param.merge!(UnionPay::Pay_params_empty).merge!(UnionPay::Pay_params)
-          @param_check = UnionPay::Pay_params_check
+          param.merge!(UnionPay::PayParamsEmpty).merge!(UnionPay::PayParams)
+          @param_check = UnionPay::PayParamsCheck
         else
           # 前台交易仅支持 消费 和 预授权
           raise("Bad trans_type for front_pay. Use back_pay instead")
@@ -52,7 +52,7 @@ module UnionPay
 
     def self.sign(args)
       sign_str = args.sort.map do |k,v|
-        "#{k}=#{v}&" unless UnionPay::Sign_ignore_params.include? k
+        "#{k}=#{v}&" unless UnionPay::SignIgnoreParams.include? k
       end.join
       Digest::MD5.hexdigest(sign_str + Digest::MD5.hexdigest(UnionPay.security_key))
     end
@@ -83,7 +83,7 @@ module UnionPay
       end
 
       arr_reserved = []
-      UnionPay::Mer_params_reserved.each do |k|
+      UnionPay::MerParamsReserved.each do |k|
         arr_reserved << "#{k}=#{param.delete k}" if param.has_key? k
       end
 

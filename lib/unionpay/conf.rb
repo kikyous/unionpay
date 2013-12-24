@@ -9,7 +9,7 @@ module UnionPay
   Sign_method = "md5" #摘要算法，目前仅支持md5 (2011-08-22)
 
   # 支付请求预定义字段
-  Pay_params = {
+  PayParams = {
     'version' => '1.0.0',
     'charset' => 'UTF-8', #UTF-8, GBK等
     'merId'   => '88888888', #商户填写
@@ -35,7 +35,7 @@ module UnionPay
   CURRENCY_CNY = "156"
 
   # 支付请求可为空字段（但必须填写）
-  Pay_params_empty = {
+  PayParamsEmpty = {
     "origQid" => "",
     "acqCode" => "",
     "merCode" => "",
@@ -53,7 +53,7 @@ module UnionPay
   }
 
   # 支付请求必填字段检查
-  Pay_params_check = [
+  PayParamsCheck = [
     "version",
     "charset",
     "transType",
@@ -83,7 +83,7 @@ module UnionPay
   ]
 
   # 查询请求必填字段检查
-  Query_params_check = [
+  QueryParamsCheck = [
     "version",
     "charset",
     "transType",
@@ -94,7 +94,7 @@ module UnionPay
   ]
 
   # 商户保留域可能包含的字段
-  Mer_params_reserved = [
+  MerParamsReserved = [
     #  NEW NAME            OLD NAME
     "cardNumber", "pan",
     "cardPasswd", "password",
@@ -112,7 +112,7 @@ module UnionPay
     "origOrderTime",
   ]
 
-  Notify_param_check = [
+  NotifyParamCheck = [
     "version",
     "charset",
     "transType",
@@ -137,7 +137,7 @@ module UnionPay
     "signature",
   ]
 
-  Sign_ignore_params = [
+  SignIgnoreParams = [
     "bank",
   ]
 end

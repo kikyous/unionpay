@@ -7,11 +7,11 @@ module UnionPay
     attr_accessor :mer_id, :security_key, :mer_abbr, :environment
 
     def mer_id= v
-      UnionPay::Pay_params['merId'] = v
+      UnionPay::PayParams['merId'] = v
     end
 
     def mer_abbr= v
-      UnionPay::Pay_params['merAbbr'] = v
+      UnionPay::PayParams['merAbbr'] = v
     end
 
     def environment= e
