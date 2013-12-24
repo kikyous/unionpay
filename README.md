@@ -18,7 +18,7 @@ UnionPay.mer_abbr     = '商户名称'
 UnionPay.security_key = '88888888'
 ```
 
-### Generate payment form
+### Generate front payment form
 ```ruby
 param = {}
 param['orderAmount']  = 11000                                           #交易金额
@@ -58,4 +58,26 @@ def unionpay_notify
     render :text => 'error'
   end
 end
+```
+
+
+
+### Generate front payment post params
+
+```ruby
+#交易类型 退货=REFUND 或 消费撤销=CONSUME_VOID, 如果原始交易是PRE_AUTH，那么后台接口也支持对应的
+#  PRE_AUTH_VOID(预授权撤销), PRE_AUTH_COMPLETE(预授权完成), PRE_AUTH_VOID_COMPLETE(预授权完成撤销)
+param = {}
+param['transType']        = UnionPay::REFUND
+param['origQid']          = '201110281442120195882'; #原交易返回的qid, 从数据库中获取
+param['orderAmount']      = 11000;        #交易金额
+param['orderNumber']      = '20131220151706'
+param['orderTime']        = '20131220151706'
+param['customerIp']       = '127.0.0.1';  #用户IP
+param['frontEndUrl']      = ""     #前台回调URL, 后台交易可为空
+param['backEndUrl']       = "http://www.example.com/sdk/utf8/back_notify.php"    #后台回调URL
+
+service = UnionPay::Service.back_pay(param)
+service.args   ## get args
+service.post   ## do post
 ```

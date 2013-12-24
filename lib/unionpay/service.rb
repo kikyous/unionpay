@@ -2,6 +2,7 @@
 require 'open-uri'
 require 'digest'
 require 'rack'
+require 'curb'
 module UnionPay
   RESP_SUCCESS  = "00"   #返回成功
   QUERY_SUCCESS = "0"    #查询成功
@@ -19,14 +20,33 @@ module UnionPay
         trans_type = param['transType']
         if [UnionPay::CONSUME, UnionPay::PRE_AUTH].include? trans_type
           @api_url = UnionPay.front_pay_url
-          param.merge!(UnionPay::PayParamsEmpty).merge!(UnionPay::PayParams)
+          self.args = PayParamsEmpty.merge(PayParams).merge(param)
           @param_check = UnionPay::PayParamsCheck
         else
           # 前台交易仅支持 消费 和 预授权
           raise("Bad trans_type for front_pay. Use back_pay instead")
         end
-        service(param,UnionPay::FRONT_PAY)
-        self
+        service
+      end
+    end
+
+    def self.back_pay(param)
+      new.instance_eval do
+        param['orderTime']         ||= Time.now.strftime('%Y%m%d%H%M%S')         #交易时间, YYYYmmhhddHHMMSS
+        param['orderCurrency']     ||= UnionPay::CURRENCY_CNY                    #交易币种，CURRENCY_CNY=>人民币
+        param['transType']         ||= UnionPay::REFUND
+        @api_url = UnionPay.back_pay_url
+        self.args = PayParamsEmpty.merge(PayParams).merge(param)
+        @param_check = PayParamsCheck
+        trans_type = param['transType']
+        if [UnionPay::CONSUME, UnionPay::PRE_AUTH].include? trans_type
+          if !self.args['cardNumber'] && !self.args['pan']
+            raise('consume OR pre_auth transactions need cardNumber!')
+          end
+        else
+          raise('origQid is not provided') if self.args['origQid'] !~ /[^[:space:]]/
+        end
+        service
       end
     end
 
@@ -72,35 +92,40 @@ module UnionPay
       html.join
     end
 
+    def post
+      Curl.post @api_url, self.args
+    end
+
     def [] key
       self.args[key]
     end
 
     private
-    def service(param, service_type)
-      if param['commodityUrl']
-        param['commodityUrl'] = URI::encode(param['commodityUrl'])
+    def service
+      if self.args['commodityUrl']
+        self.args['commodityUrl'] = URI::encode(self.args['commodityUrl'])
       end
 
       arr_reserved = []
       UnionPay::MerParamsReserved.each do |k|
-        arr_reserved << "#{k}=#{param.delete k}" if param.has_key? k
+        arr_reserved << "#{k}=#{self.args.delete k}" if self.args.has_key? k
       end
 
       if arr_reserved.any?
-        param['merReserved'] = arr_reserved.join('&')
+        self.args['merReserved'] = arr_reserved.join('&')
       else
-        param['merReserved'] ||= ''
+        self.args['merReserved'] ||= ''
       end
 
       @param_check.each do |k|
-        raise("KEY [#{k}] not set in params given") unless param.has_key? k
+        raise("KEY [#{k}] not set in params given") unless self.args.has_key? k
       end
 
       # signature
-      param['signature']  = Service.sign(param)
-      param['signMethod'] = UnionPay::Sign_method
-      self.args = param
+      self.args['signature']  = Service.sign(self.args)
+      self.args['signMethod'] = UnionPay::Sign_method
+
+      self
     end
   end
 end
