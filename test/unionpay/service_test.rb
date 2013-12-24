@@ -26,4 +26,20 @@ class UnionPay::ServiceTest < Test::Unit::TestCase
     assert dev_form != pro_form
   end
 
+  def test_responce
+    params = {
+      "charset" => "UTF-8", "cupReserved" => "", "exchangeDate" => "",
+      "exchangeRate" => "", "merAbbr" => "银联商城（公司）", "merId" => "105550149170027",
+      "orderAmount" => "9300", "orderCurrency" => "156", "orderNumber" => "D201312240006",
+      "qid" => "201312241123141054552", "respCode" => "00", "respMsg" => "Success!",
+      "respTime" => "20131224112352", "settleAmount" => "9300", "settleCurrency" => "156",
+      "settleDate" => "1224", "traceNumber" => "105455", "traceTime" => "1224112314",
+      "transType" => "01", "version" => "1.0.0", "signMethod" => "MD5",
+      "signature" => "5b19db55d07290c739de97cb117ce884",
+    #  "controller" => "front_money_payment_records", "action" => "unionpay_notify"
+    }
+    assert_not_nil UnionPay::Service.responce(params).args
+
+  end
+
 end

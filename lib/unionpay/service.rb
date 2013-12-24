@@ -44,6 +44,7 @@ module UnionPay
         end
         param.merge! cup_reserved
         param.delete 'cupReserved'
+        self.args = param
         self
       end
     end
