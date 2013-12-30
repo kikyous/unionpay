@@ -60,8 +60,6 @@ def unionpay_notify
 end
 ```
 
-
-
 ### Generate back payment post params
 
 ```ruby
@@ -79,4 +77,30 @@ param['backEndUrl']       = "http://www.example.com/sdk/utf8/back_notify.php"   
 service = UnionPay::Service.back_pay(param)
 service.args   ## get args
 service.post   ## do post
+```
+
+### Query
+
+```ruby
+param = {}
+param['transType'] = UnionPay::CONSUME
+param['orderNumber'] = "20111108150703852"
+param['orderTime'] = "20111108150703"
+query = UnionPay::Service.query(param)
+res = query.post
+responce = UnionPay::Service.responce res.body_str
+
+query_result = responce['queryResult']
+resp_code = responce['respCode']
+
+if query_result == UnionPay::QUERY_FAIL
+  puts "交易失败[respCode:#{resp_code}]!"
+elsif query_result == UnionPay::QUERY_INVALID
+  puts "不存在此交易!"
+elsif resp_code==UnionPay::RESP_SUCCESS && query_result == UnionPay::QUERY_SUCCESS
+  puts '交易成功!'
+elsif resp_code==UnionPay::RESP_SUCCESS && query_result == UnionPay::QUERY_WAIT
+  puts '交易处理中，下次再查!'
+end
+#
 ```

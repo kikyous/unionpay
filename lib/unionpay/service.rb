@@ -44,7 +44,7 @@ module UnionPay
             raise('consume OR pre_auth transactions need cardNumber!')
           end
         else
-          raise('origQid is not provided') if self.args['origQid'] !~ /[^[:space:]]/
+          raise('origQid is not provided') if UnionPay.empty? self.args['origQid']
         end
         service
       end
@@ -52,8 +52,17 @@ module UnionPay
 
     def self.responce(param)
       new.instance_eval do
-        cup_reserved = (param['cupReserved'] ||= '')
-        cup_reserved = Rack::Utils.parse_nested_query cup_reserved[1..-2]
+        if param.is_a? String
+          pattern = /cupReserved=(\{.*?\})/
+          cup_reserved = pattern.match(param)
+          if cup_reserved
+            cup_reserved = cup_reserved[1]
+            param.sub! pattern, 'cupReserved='
+          end
+          param = Rack::Utils.parse_nested_query param
+        end
+        cup_reserved ||= (param['cupReserved'] ||= '')
+        arr_reserved = Rack::Utils.parse_nested_query cup_reserved[1..-2]
         if !param['signature'] || !param['signMethod']
           raise('No signature Or signMethod set in notify data!')
         end
@@ -62,13 +71,35 @@ module UnionPay
         if param.delete('signature') != Service.sign(param)
           raise('Bad signature returned!')
         end
-        param.merge! cup_reserved
-        param.delete 'cupReserved'
-        self.args = param
+        self.args = param.merge arr_reserved
+        self.args.delete 'cupReserved'
         self
       end
     end
 
+    def self.query(param)
+      new.instance_eval do
+        @api_url = UnionPay.query_url
+        param['version'] = UnionPay::PayParams['version']
+        param['charset'] = UnionPay::PayParams['charset']
+        param['merId'] = UnionPay::PayParams['merId']
+
+        if UnionPay.empty?(UnionPay::PayParams['merId']) && UnionPay.empty?(UnionPay::PayParams['acqCode'])
+          raise('merId and acqCode can\'t be both empty')
+        end
+        if !UnionPay.empty?(UnionPay::PayParams['acqCode'])
+          acqCode = UnionPay::PayParams['acqCode']
+          param['merReserved'] = "{acqCode=#{acqCode}}"
+        else
+          param['merReserved'] = ''
+        end
+
+        self.args = param
+        @param_check = UnionPay::QueryParamsCheck
+
+        service
+      end
+    end
 
     def self.sign(args)
       sign_str = args.sort.map do |k,v|

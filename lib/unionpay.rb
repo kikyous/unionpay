@@ -1,6 +1,7 @@
 require File.dirname(__FILE__) + '/unionpay/conf'
 require File.dirname(__FILE__) + '/unionpay/service'
 require File.dirname(__FILE__) + '/unionpay/version'
+require File.dirname(__FILE__) + '/unionpay/utils'
 
 module UnionPay
   class << self
