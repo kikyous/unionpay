@@ -88,8 +88,8 @@ module UnionPay
           raise('merId and acqCode can\'t be both empty')
         end
         if !UnionPay.empty?(UnionPay::PayParams['acqCode'])
-          acqCode = UnionPay::PayParams['acqCode']
-          param['merReserved'] = "{acqCode=#{acqCode}}"
+          acq_code = UnionPay::PayParams['acqCode']
+          param['merReserved'] = "{acqCode=#{acq_code}}"
         else
           param['merReserved'] = ''
         end
@@ -101,8 +101,8 @@ module UnionPay
       end
     end
 
-    def self.sign(args)
-      sign_str = args.sort.map do |k,v|
+    def self.sign(param)
+      sign_str = param.sort.map do |k,v|
         "#{k}=#{v}&" unless UnionPay::SignIgnoreParams.include? k
       end.join
       Digest::MD5.hexdigest(sign_str + Digest::MD5.hexdigest(UnionPay.security_key))

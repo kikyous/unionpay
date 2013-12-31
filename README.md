@@ -102,5 +102,4 @@ elsif resp_code==UnionPay::RESP_SUCCESS && query_result == UnionPay::QUERY_SUCCE
 elsif resp_code==UnionPay::RESP_SUCCESS && query_result == UnionPay::QUERY_WAIT
   puts '交易处理中，下次再查!'
 end
-#
 ```
