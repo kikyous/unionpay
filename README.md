@@ -76,7 +76,11 @@ param['backEndUrl']       = "http://www.example.com/sdk/utf8/back_notify.php"   
 
 service = UnionPay::Service.back_pay(param)
 service.args   ## get args
-service.post   ## do post
+res = service.post   ## do post
+responce = UnionPay::Service.responce res.body_str
+if responce['respCode'] != UnionPay::RESP_SUCCESS
+  rails("Error #{responce['respCode']}: #{responce['respMsg']}:")
+end
 ```
 
 ### Query

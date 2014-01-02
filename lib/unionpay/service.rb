@@ -108,12 +108,12 @@ module UnionPay
       Digest::MD5.hexdigest(sign_str + Digest::MD5.hexdigest(UnionPay.security_key))
     end
 
-    def form options={}
-      attrs = options.map{|k,v| "#{k}='#{v}'"}.join(' ')
+    def form(options={})
+      attrs = options.map { |k, v| "#{k}='#{v}'" }.join(' ')
       html = [
         "<form #{attrs} action='#{@api_url}' method='post'>"
       ]
-      args.each do |k,v|
+      args.each do |k, v|
         html << "<input type='hidden' name='#{k}' value='#{v}' />"
       end
       if block_given?
@@ -127,7 +127,7 @@ module UnionPay
       Curl.post @api_url, self.args
     end
 
-    def [] key
+    def [](key)
       self.args[key]
     end
 
