@@ -79,7 +79,7 @@ service.args   ## get args
 res = service.post   ## do post
 responce = UnionPay::Service.responce res.body_str
 if responce['respCode'] != UnionPay::RESP_SUCCESS
-  rails("Error #{responce['respCode']}: #{responce['respMsg']}:")
+  raise("Error #{responce['respCode']}: #{responce['respMsg']}:")
 end
 ```
 
