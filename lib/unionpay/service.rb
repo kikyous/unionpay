@@ -4,13 +4,13 @@ require 'digest'
 require 'rack'
 require 'curb'
 module UnionPay
-  RESP_SUCCESS  = "00"   #返回成功
-  QUERY_SUCCESS = "0"    #查询成功
-  QUERY_FAIL    = "1"
-  QUERY_WAIT    = "2"
-  QUERY_INVALID = "3"
+  RESP_SUCCESS  = '00' #返回成功
+  QUERY_SUCCESS = '0' #查询成功
+  QUERY_FAIL    = '1'
+  QUERY_WAIT    = '2'
+  QUERY_INVALID = '3'
   class Service
-    attr_accessor :args
+    attr_accessor :args, :api_url
 
     def self.front_pay(param)
       new.instance_eval do
