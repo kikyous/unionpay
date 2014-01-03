@@ -53,12 +53,9 @@ module UnionPay
     def self.responce(param)
       new.instance_eval do
         if param.is_a? String
-          pattern = /cupReserved=(\{.*?\})/
-          cup_reserved = pattern.match(param)
-          if cup_reserved
-            cup_reserved = cup_reserved[1]
-            param.sub! pattern, 'cupReserved='
-          end
+          pattern = /(?<=cupReserved=)(\{.*?\})/
+          cup_reserved = pattern.match(param).to_s
+          param.sub! pattern, ''
           param = Rack::Utils.parse_nested_query param
         end
         cup_reserved ||= (param['cupReserved'] ||= '')

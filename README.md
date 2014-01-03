@@ -63,10 +63,10 @@ end
 ### Generate back payment post params
 
 ```ruby
+param = {}
 # 交易类型 退货=REFUND 或 消费撤销=CONSUME_VOID, 如果原始交易是PRE_AUTH，那么后台接口也支持对应的
 #  PRE_AUTH_VOID(预授权撤销), PRE_AUTH_COMPLETE(预授权完成), PRE_AUTH_VOID_COMPLETE(预授权完成撤销)
-param = {}
-param['transType']        = UnionPay::REFUND
+# param['transType']        = UnionPay::REFUND
 param['origQid']          = '201110281442120195882' #原交易返回的qid, 从数据库中获取
 param['orderAmount']      = 11000        #交易金额
 param['orderNumber']      = '20131220151706'   #订单号，必须唯一(不能与原交易相同)
