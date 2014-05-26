@@ -2,7 +2,9 @@
 require 'open-uri'
 require 'digest'
 require 'cgi'
-require 'curb'
+require 'uri'
+require 'net/http'
+
 module UnionPay
   RESP_SUCCESS  = '00' #返回成功
   QUERY_SUCCESS = '0' #查询成功
@@ -121,7 +123,7 @@ module UnionPay
     end
 
     def post
-      Curl.post @api_url, self.args
+      Net::HTTP.post_form URI(@api_url), self.args
     end
 
     def [](key)

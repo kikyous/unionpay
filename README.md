@@ -77,7 +77,7 @@ param['backEndUrl']       = "http://www.example.com/sdk/utf8/back_notify.php"   
 service = UnionPay::Service.back_pay(param)
 service.args   ## get args
 res = service.post   ## do post
-response = UnionPay::Service.response res.body_str
+response = UnionPay::Service.response res.body
 if response['respCode'] != UnionPay::RESP_SUCCESS
   raise("Error #{response['respCode']}: #{response['respMsg']}:")
 end
@@ -92,7 +92,7 @@ param['orderNumber'] = "20111108150703852"
 param['orderTime'] = "20111108150703"
 query = UnionPay::Service.query(param)
 res = query.post
-response = UnionPay::Service.response res.body_str
+response = UnionPay::Service.response res.body
 
 query_result = response['queryResult']
 resp_code = response['respCode']

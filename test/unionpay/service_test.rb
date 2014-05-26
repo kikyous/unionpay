@@ -68,7 +68,7 @@ class UnionPay::ServiceTest < Minitest::Test
       UnionPay.environment = :production
       query = UnionPay::Service.query(param)
       res = query.post
-      UnionPay::Service.response res.body_str
+      UnionPay::Service.response res.body
     end
   end
 
