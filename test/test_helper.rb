@@ -1,4 +1,4 @@
-require 'test/unit'
+require 'minitest/autorun'
 require 'unionpay'
 
 # UnionPay.environment = :development    ## 测试环境， :pre_production  #预上线环境， 默认 # 线上环境
