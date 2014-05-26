@@ -50,7 +50,7 @@ service.form(target: '_blank', id: 'form'){"<input type='submit' />"}  ## get fo
 def unionpay_notify
   # except :controller_name, :action_name, :host, etc.
   notify_params = params.except(*request.path_parameters.keys)
-  args = UnionPay::Service.responce(notify_params).args
+  args = UnionPay::Service.response(notify_params).args
   if args['respCode'] == UnionPay::RESP_SUCCESS
     # valid notify, code your business logic.
     render :text => 'success'
@@ -77,9 +77,9 @@ param['backEndUrl']       = "http://www.example.com/sdk/utf8/back_notify.php"   
 service = UnionPay::Service.back_pay(param)
 service.args   ## get args
 res = service.post   ## do post
-responce = UnionPay::Service.responce res.body_str
-if responce['respCode'] != UnionPay::RESP_SUCCESS
-  raise("Error #{responce['respCode']}: #{responce['respMsg']}:")
+response = UnionPay::Service.response res.body_str
+if response['respCode'] != UnionPay::RESP_SUCCESS
+  raise("Error #{response['respCode']}: #{response['respMsg']}:")
 end
 ```
 
@@ -92,10 +92,10 @@ param['orderNumber'] = "20111108150703852"
 param['orderTime'] = "20111108150703"
 query = UnionPay::Service.query(param)
 res = query.post
-responce = UnionPay::Service.responce res.body_str
+response = UnionPay::Service.response res.body_str
 
-query_result = responce['queryResult']
-resp_code = responce['respCode']
+query_result = response['queryResult']
+resp_code = response['respCode']
 
 if query_result == UnionPay::QUERY_FAIL
   puts "交易失败[respCode:#{resp_code}]!"

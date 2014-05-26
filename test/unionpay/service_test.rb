@@ -44,7 +44,7 @@ class UnionPay::ServiceTest < Test::Unit::TestCase
     dev_form = generate_back_pay_service
     assert_not_nil dev_form.post
   end
-  def test_responce
+  def test_response
     test = {
       "charset" => "UTF-8", "cupReserved" => "", "exchangeDate" => "",
       "exchangeRate" => "", "merAbbr" => "银联商城（公司）", "merId" => "105550149170027",
@@ -56,7 +56,7 @@ class UnionPay::ServiceTest < Test::Unit::TestCase
       "signature" => "5b19db55d07290c739de97cb117ce884",
     #  "controller" => "front_money_payment_records", "action" => "unionpay_notify"
     }
-    assert UnionPay::Service.responce(test).args['respCode'] == UnionPay::RESP_SUCCESS
+    assert UnionPay::Service.response(test).args['respCode'] == UnionPay::RESP_SUCCESS
   end
 
   def test_query
@@ -68,7 +68,7 @@ class UnionPay::ServiceTest < Test::Unit::TestCase
       UnionPay.environment = :production
       query = UnionPay::Service.query(param)
       res = query.post
-      responce = UnionPay::Service.responce res.body_str
+      UnionPay::Service.response res.body_str
     end
   end
 
