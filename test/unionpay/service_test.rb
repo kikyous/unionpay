@@ -1,6 +1,6 @@
 require 'test_helper'
 
-class UnionPay::ServiceTest < Test::Unit::TestCase
+class UnionPay::ServiceTest < Minitest::Test
   def generate_form
     param = {}
     param['transType']     = UnionPay::CONSUME                         #交易类型，CONSUME or PRE_AUTH
@@ -29,7 +29,7 @@ class UnionPay::ServiceTest < Test::Unit::TestCase
   end
 
   def test_generate_form
-    assert_not_nil generate_form.form(target: '_blank', id: 'form'){"<input type='submit' />"}
+    refute_nil generate_form.form(target: '_blank', id: 'form'){"<input type='submit' />"}
   end
 
   def test_front_pay_generate_form_with_different_environment
@@ -42,9 +42,9 @@ class UnionPay::ServiceTest < Test::Unit::TestCase
 
   def test_back_pay_service
     dev_form = generate_back_pay_service
-    assert_not_nil dev_form.post
+    refute_nil dev_form.post
   end
-  def test_responce
+  def test_response
     test = {
       "charset" => "UTF-8", "cupReserved" => "", "exchangeDate" => "",
       "exchangeRate" => "", "merAbbr" => "银联商城（公司）", "merId" => "105550149170027",
@@ -56,11 +56,11 @@ class UnionPay::ServiceTest < Test::Unit::TestCase
       "signature" => "5b19db55d07290c739de97cb117ce884",
     #  "controller" => "front_money_payment_records", "action" => "unionpay_notify"
     }
-    assert UnionPay::Service.responce(test).args['respCode'] == UnionPay::RESP_SUCCESS
+    assert UnionPay::Service.response(test).args['respCode'] == UnionPay::RESP_SUCCESS
   end
 
   def test_query
-    assert_raise_message 'Bad signature returned!' do
+    assert_raises RuntimeError, 'Bad signature returned!' do
       param = {}
       param['transType'] = UnionPay::CONSUME
       param['orderNumber'] = "20111108150703852"
@@ -68,7 +68,7 @@ class UnionPay::ServiceTest < Test::Unit::TestCase
       UnionPay.environment = :production
       query = UnionPay::Service.query(param)
       res = query.post
-      responce = UnionPay::Service.responce res.body_str
+      UnionPay::Service.response res.body
     end
   end
 

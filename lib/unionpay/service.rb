@@ -1,8 +1,10 @@
 #encoding:utf-8
 require 'open-uri'
 require 'digest'
-require 'rack'
-require 'curb'
+require 'cgi'
+require 'uri'
+require 'net/http'
+
 module UnionPay
   RESP_SUCCESS  = '00' #返回成功
   QUERY_SUCCESS = '0' #查询成功
@@ -50,16 +52,16 @@ module UnionPay
       end
     end
 
-    def self.responce(param)
+    def self.response(param)
       new.instance_eval do
         if param.is_a? String
           pattern = /(?<=cupReserved=)(\{.*?\})/
           cup_reserved = pattern.match(param).to_s
           param.sub! pattern, ''
-          param = Rack::Utils.parse_nested_query param
+          param = CGI.parse param
         end
-        cup_reserved ||= (param['cupReserved'] ||= '')
-        arr_reserved = Rack::Utils.parse_nested_query cup_reserved[1..-2]
+        cup_reserved ||= (param['cupReserved'].to_s[1..-2] || '')
+        arr_reserved = CGI.parse cup_reserved
         if !param['signature'] || !param['signMethod']
           raise('No signature Or signMethod set in notify data!')
         end
@@ -121,7 +123,7 @@ module UnionPay
     end
 
     def post
-      Curl.post @api_url, self.args
+      Net::HTTP.post_form URI(@api_url), self.args
     end
 
     def [](key)
