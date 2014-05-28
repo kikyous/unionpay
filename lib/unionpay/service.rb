@@ -57,6 +57,7 @@ module UnionPay
           cup_reserved = pattern.match(param).to_s
           param.sub! pattern, ''
           param = Rack::Utils.parse_nested_query param
+          param['cupReserved'] = cup_reserved
         end
         cup_reserved ||= (param['cupReserved'] ||= '')
         arr_reserved = Rack::Utils.parse_nested_query cup_reserved[1..-2]
