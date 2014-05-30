@@ -58,10 +58,10 @@ module UnionPay
           pattern = /(?<=cupReserved=)(\{.*?\})/
           cup_reserved = pattern.match(param).to_s
           param.sub! pattern, ''
-          param = CGI.parse param
+          param = parse_query param
         end
         cup_reserved ||= (param['cupReserved'].to_s[1..-2] || '')
-        arr_reserved = CGI.parse cup_reserved
+        arr_reserved = parse_query cup_reserved
         if !param['signature'] || !param['signMethod']
           raise('No signature Or signMethod set in notify data!')
         end
@@ -156,6 +156,11 @@ module UnionPay
       self.args['signMethod'] = UnionPay::Sign_method
 
       self
+    end
+
+    def parse_query(query_string)
+      h = CGI.parse(query_string)
+      Hash[h.collect{|k, v| v.size <= 1 ? [k, v.first] : [k, v]}]
     end
   end
 end
