@@ -2,7 +2,7 @@
 require 'open-uri'
 require 'digest'
 require 'rack'
-require 'curb'
+require 'net/http'
 module UnionPay
   RESP_SUCCESS  = '00' #返回成功
   QUERY_SUCCESS = '0' #查询成功
@@ -50,7 +50,7 @@ module UnionPay
       end
     end
 
-    def self.responce(param)
+    def self.response(param)
       new.instance_eval do
         if param.is_a? String
           pattern = /(?<=cupReserved=)(\{.*?\})/
@@ -122,7 +122,7 @@ module UnionPay
     end
 
     def post
-      Curl.post @api_url, self.args
+      Net::HTTP.post_form URI(@api_url), self.args
     end
 
     def [](key)
